@@ -1,21 +1,20 @@
 import PIL.Image
 import PIL.ImageDraw
 import face_recognition
-import PIL.ImageFont
 import os
 import pickle
 
 ## Requirements
-font = PIL.ImageFont.truetype("arial.ttf", 15)
 dir = os.getcwd()
 people = dict()
 
 people_dir = dir + '/people/'
 for person in os.listdir(people_dir):
+    print(person)
     person_dir = people_dir + person + '/'
     person_faces = list()
+    print("Number of photos:", len(os.listdir(person_dir)))
     for photo in os.listdir(person_dir):
-        print(photo)
         image = face_recognition.load_image_file(person_dir + photo)
         face_encodings = face_recognition.face_encodings(image)
         if len(face_encodings) > 0:
@@ -24,7 +23,7 @@ for person in os.listdir(people_dir):
     if len(person_faces) == 0:
         print("No faces were found.")
     else:
-        print(len(person_faces))
+        print("Detected Faces from ",person,": ",len(person_faces))
         people[name] = person_faces
 
 # Pickling (serializing) a dictionary into a file
