@@ -23,7 +23,7 @@ img = face_recognition.load_image_file(root.filename)
 img_loc = face_recognition.face_locations(img, model="hog")
 img_enc = face_recognition.face_encodings(img, known_face_locations=img_loc)
 face_img = PIL.Image.fromarray(img)
-face_img.copy().crop()
+
 print("Face Tagging")
 unknown_faces_location = []
 unknown_faces_enconded = []
@@ -36,15 +36,17 @@ for i in range(0,len(img_enc)):
         if  count_true > best_match_count: # TO find the best person that matches with the face
             best_match_count = count_true
             best_match_name = k
+    # Draw and write on photo
     top,right,bottom,left = img_loc[i]
     draw = PIL.ImageDraw.Draw(face_img)
     draw.rectangle([left,top,right,bottom], outline="red", width=3)
     draw.text((left,bottom), best_match_name, font=PIL.ImageFont.truetype("Acme____.ttf", math.floor((right-left)/8)))
-    if best_match_count == 0:
+    if best_match_count == 0: # keep a list of unknown faces for Learning Phase
         unknown_faces_location.append(img_loc[i])
         unknown_faces_enconded.append(img_enc[i])
 face_img.show()
 
+# Learning Phase
 if len(unknown_faces_enconded) > 0:
     print("There is(are)", len(unknown_faces_enconded), "unknown person(s) in the photo. Would you like to enter their information? (Y|N)")
     if input().lower()in ['y','yes']:
@@ -52,7 +54,7 @@ if len(unknown_faces_enconded) > 0:
         print("In each stage, enter empty string if you do not know the person")
         for i in range(0,len(unknown_faces_location)):
             top, right, bottom, left = unknown_faces_location[i]
-            roi =face_img.copy().crop([left,top,right,bottom])
+            roi =face_img.copy().crop([left,top,right,bottom]) #Crop the region of interest
             roi.show()
             name = input("Who is this person? ")
             if name in people:
@@ -62,8 +64,6 @@ if len(unknown_faces_enconded) > 0:
             elif name:
                 people[name] = [unknown_faces_enconded[i]]
                 print("New person added")
-                #a = ImageOps.crop(face_img, unknown_faces_location[i])
-                #a = PIL.Image.fromarray(a)
-                #a.crop()
+        # Write to file
         with open('encoded_people.pickle', 'wb') as filename:
             pickle.dump(people, filename)
