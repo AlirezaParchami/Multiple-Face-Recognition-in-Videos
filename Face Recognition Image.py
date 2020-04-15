@@ -46,9 +46,10 @@ for i in range(0,len(img_enc)):
 face_img.show()
 
 if len(unknown_faces_enconded) > 0:
-    print("There are ", len(unknown_faces_enconded), "unknown person(s) in the photo. Would you like to enter their information? (Y|N)")
+    print("There is(are)", len(unknown_faces_enconded), "unknown person(s) in the photo. Would you like to enter their information? (Y|N)")
     if input().lower()in ['y','yes']:
-        print("Press Enter (empty name) if you do not know the person")
+        print("Learning Phase")
+        print("In each stage, enter empty string if you do not know the person")
         for i in range(0,len(unknown_faces_location)):
             top, right, bottom, left = unknown_faces_location[i]
             roi =face_img.copy().crop([left,top,right,bottom])
@@ -57,9 +58,10 @@ if len(unknown_faces_enconded) > 0:
             if name in people:
                 tmp = people[name]
                 tmp.append(unknown_faces_enconded[i])
+                print("The person was in the database. New photo was added to their profile.")
             elif name:
-                print(name)
                 people[name] = [unknown_faces_enconded[i]]
+                print("New person added")
                 #a = ImageOps.crop(face_img, unknown_faces_location[i])
                 #a = PIL.Image.fromarray(a)
                 #a.crop()

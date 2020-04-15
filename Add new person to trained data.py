@@ -1,7 +1,7 @@
 import pickle
 import os
 import face_recognition
-
+import numpy as np
 dir = os.getcwd()
 
 with open('encoded_people.pickle', 'rb') as filename:
@@ -25,11 +25,21 @@ for photo in os.listdir(person_dir):
     face_encodings = face_recognition.face_encodings(image)
     if len(face_encodings) > 0:
         person_faces.append(face_encodings[0])
+
 if len(person_faces) == 0:
     print("No faces were found.")
 else:
-    print(len(person_faces))
-    people[newPersonName] = person_faces
+    print(len(person_faces), "faces were founded from ", newPersonName, "in the folder.")
+    if newPersonName in people:
+        people[newPersonName] = people[newPersonName] + person_faces
+    else:
+        people[newPersonName] = person_faces
+
+refToNewPerson = people[newPersonName]
+unique_rows = np.unique(refToNewPerson , axis=0)
+print(len(unique_rows),"new faces are founded.")
+people[newPersonName] = [xi for xi in unique_rows]
+print("There are now ",len(people[newPersonName]),"faces for ",newPersonName)
 
 with open('encoded_people.pickle', 'wb') as filename:
     pickle.dump(people, filename)
