@@ -14,7 +14,10 @@ for person in os.listdir(people_dir):
     person_dir = people_dir + person + '/'
     person_faces = list() #list of detected faces for the person
     print("Number of photos:", len(os.listdir(person_dir)))
+    print(os.listdir(person_dir))
     for photo in os.listdir(person_dir):
+        if photo[-3:] == ".db":
+            continue
         image = face_recognition.load_image_file(person_dir + photo)
         face_encodings = face_recognition.face_encodings(image)
         if len(face_encodings) > 0: #it would be possible that no faces are found in a photo

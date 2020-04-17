@@ -11,12 +11,23 @@ pip install face-recognition
 ```
 Make sure that you have Visual Studio 2015 (or newer) on your windows.
 
+# How to use
+After installation of requirements, make folders whose name is the name of people. Put as many photos as you want in the folders and copy all of them in the `People` folder.
+ Run `Face Encoding.py` to encode images into `encoded_people.pickle` and then, you can run either `Face Recognition Image.py` or `Face Recognition Webcam.py` based on your work.
+ Whenever you need to add a new person or add new images to an encoded person, it would be enough to run `Add new person to trained data.py`
+![Multiple Face Detection](https://i.imgur.com/XyLMQOB.jpg)
+
+# Features
+##### Detect Multiple Faces in a photo
+By using hog algorithm in face-recognition library, the function is able to detect as many faces as possible.
+![Multiple Face Detection](https://i.imgur.com/WoUIa3X.jpg)
+
+##### Learning Phase
+You can enter the name of unknown faces detected in the photos
+![Learning Phase](http://uupload.ir/files/ej1w_3121321.jpg)
+##### Webcam and Video Face Detection
+
 # Features To do
-- use different photos of a person from different angles and assign their name, using people dataset
-- save data into textfile
-- use webcam live video
-- detect multiple faces in each frame
-- match the Faces with extracted data
 - calculate the similarity of faces between given radius r1 and r2.
  
 # Useful Sources

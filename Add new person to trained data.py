@@ -21,6 +21,8 @@ if newPersonName not in os.listdir(people_dir):
 person_dir = people_dir + newPersonName + '/'
 person_faces = list()
 for photo in os.listdir(person_dir):
+    if photo[-3:] == ".db":
+        continue
     image = face_recognition.load_image_file(person_dir + photo)
     face_encodings = face_recognition.face_encodings(image)
     if len(face_encodings) > 0:
